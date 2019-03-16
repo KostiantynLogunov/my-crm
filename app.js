@@ -12,7 +12,10 @@ const positionRoutes = require('./routes/position');
 const keys = require('./config/keys');
 const app = express();
 
-mongoose.connect(keys.mongoURI, {useNewUrlParser: true})
+mongoose.connect(keys.mongoURI, {
+    useCreateIndex: true,
+    useNewUrlParser: true
+})
     .then(() => console.log('mongoDB connected!'))
     .catch(error =>console.log(error));
 
@@ -20,6 +23,7 @@ app.use(passport.initialize());
 require('./middleware/passport')(passport);
 
 app.use(morgan('dev'));
+app.use('/uploads', express.static('uploads'));
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.json());
 app.use(cors());
